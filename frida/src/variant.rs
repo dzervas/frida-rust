@@ -99,7 +99,7 @@ unsafe fn sv_array_to_map(variant: *mut frida_sys::GVariant) -> HashMap<String, 
 
     let mut iter: frida_sys::GVariantIter = std::mem::MaybeUninit::zeroed().assume_init();
     let mut value: *mut frida_sys::GVariant = std::ptr::null_mut();
-    let mut key: *const i8 = std::ptr::null_mut();
+    let mut key: *const u8 = std::ptr::null_mut();
 
     frida_sys::g_variant_iter_init(&mut iter, variant);
     let sv = CString::new("{sv}").unwrap();
@@ -115,7 +115,7 @@ unsafe fn asv_array_to_maplist(variant: *mut frida_sys::GVariant) -> Vec<HashMap
     let mut ret = Vec::new();
     let mut outer: frida_sys::GVariantIter = std::mem::MaybeUninit::zeroed().assume_init();
     let mut inner = std::ptr::null_mut();
-    let mut key: *const i8 = std::ptr::null_mut();
+    let mut key: *const u8 = std::ptr::null_mut();
     let mut value: *mut frida_sys::GVariant = std::ptr::null_mut();
 
     frida_sys::g_variant_iter_init(&mut outer, variant);
