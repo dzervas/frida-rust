@@ -11,7 +11,7 @@ use std::path::PathBuf;
 
 fn main() {
     println!(
-        "cargo:rustc-link-search={}",
+        "cargo:rustc-link-search={}/include",
         env::var("CARGO_MANIFEST_DIR").unwrap()
     );
     let target_os = env::var("CARGO_CFG_TARGET_OS").unwrap();
