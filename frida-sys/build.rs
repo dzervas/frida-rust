@@ -23,9 +23,6 @@ fn main() {
         download_and_use_devkit("core", include_str!("FRIDA_VERSION").trim())
     };
 
-    #[cfg(not(feature = "auto-download"))]
-    println!("cargo:rustc-link-lib=frida-core");
-
     if target_os == "linux" {
         println!("cargo:rustc-link-lib=pthread");
         println!("cargo:rustc-link-lib=resolv");
@@ -41,6 +38,16 @@ fn main() {
     }
 
     let bindings = bindgen::Builder::default();
+
+    #[cfg(not(feature = "auto-download"))]
+    let bindings = if let Ok(frida_static_dir) = std::env::var("FRIDA_CORE_DEVKIT_PATH") {
+        println!("cargo:rustc-link-lib=static=frida-core");
+        println!("cargo:rustc-link-search={frida_static_dir}");
+        bindings.clang_arg(format!("-I{frida_static_dir}"))
+    } else {
+        println!("cargo:rustc-link-lib=frida-core");
+        bindings
+    };
 
     #[cfg(feature = "auto-download")]
     let bindings = bindings.clang_arg(format!("-I{include_dir}"));
