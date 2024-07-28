@@ -17,6 +17,8 @@ fn main() {
     let target_os = env::var("CARGO_CFG_TARGET_OS").unwrap();
     let target_vendor = env::var("CARGO_CFG_TARGET_VENDOR").unwrap();
 
+    println!("cargo:rerun-if-env-changed=FRIDA_CORE_DEVKIT_PATH");
+
     #[cfg(feature = "auto-download")]
     let include_dir = {
         use frida_build::download_and_use_devkit;
